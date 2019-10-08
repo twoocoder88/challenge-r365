@@ -15,7 +15,7 @@ test('should return a number', () => {
 })
 
 test('should add up the numbers delimited by a ","', () => {
-  const testCases: TestCases = [['20', 20], ['1,5000', 5001]]
+  const testCases: TestCases = [['20', 20], ['1,5000', 5001], ['4,-3', 1]]
 
   testCases.forEach(tc => {
     expect(add(tc[0])).toBe(tc[1])
