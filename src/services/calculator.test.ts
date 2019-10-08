@@ -1,10 +1,10 @@
 import {
   addFormattedStringOfNumbers as add,
-  EXCEPTION_MAX_TWO_NUMBERS
+  NEGATIVE_NUMBERS_NOT_ALLOWED
 } from './calculator'
 
-// input, expected output
-type TestCases = Array<[string, number?]>
+// input, expected output, exception
+type TestCases = Array<[string, number?, string?]>
 
 test('should return a number', () => {
   const testCases: TestCases = [['20', 20], ['1,5000', 5001]]
@@ -15,7 +15,7 @@ test('should return a number', () => {
 })
 
 test('should add up the numbers delimited by a ","', () => {
-  const testCases: TestCases = [['20', 20], ['1,5000', 5001], ['4,-3', 1]]
+  const testCases: TestCases = [['20', 20], ['1,5000', 5001], ['4,3', 7]]
 
   testCases.forEach(tc => {
     expect(add(tc[0])).toBe(tc[1])
@@ -53,9 +53,22 @@ test('supports adding an unlimited number of numbers', () => {
 })
 
 test('should support the new line character "\\n" as another delimiter', () => {
-  const testCases: TestCases = [['1\n2,3', 6]]
+  const testCases: TestCases = [['1\n2,3', 6], ['2\n4\n6', 12]]
 
   testCases.forEach(tc => {
     expect(add(tc[0])).toBe(tc[1])
+  })
+})
+
+test('should throw an exception when negative numbers are included', () => {
+  const testCases: TestCases = [
+    ['-1\n2,-3', undefined, `${NEGATIVE_NUMBERS_NOT_ALLOWED}-1, -3`],
+    ['-1,2,3,-4', undefined, `${NEGATIVE_NUMBERS_NOT_ALLOWED}-1, -4`]
+  ]
+
+  testCases.forEach(tc => {
+    expect(function() {
+      add(tc[0])
+    }).toThrow(tc[2])
   })
 })
