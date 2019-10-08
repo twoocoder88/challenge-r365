@@ -84,3 +84,15 @@ test('should support 1 additional character delimiter', () => {
   ]
   runTestCases(testCases)
 })
+
+test('should support 1 custom delimiter of any length', () => {
+  const testCases: TestCases = [
+    ['//[***]\n11***22***33', 66],
+    ['//[&&&]\n11&&&22&&&33', 66],
+    ['//[..]\n11..22..33', 66],
+    ['//[$$$$$]\n11$$$$$22$$$$$33', 66],
+    ['//[r9r]\n11r9r22r9r33', 66],
+    ['//[r9r]\n11rr22r9r33', 44]
+  ]
+  runTestCases(testCases)
+})
