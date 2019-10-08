@@ -52,7 +52,7 @@ test('supports adding an unlimited number of numbers', () => {
   })
 })
 
-test('should support the new line character "\n" as another delimiter', () => {
+test('should support the new line character "\\n" as another delimiter', () => {
   const testCases: TestCases = [['1\n2,3', 6]]
 
   testCases.forEach(tc => {
