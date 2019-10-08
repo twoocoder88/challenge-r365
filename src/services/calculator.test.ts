@@ -96,3 +96,13 @@ test('should support 1 custom delimiter of any length', () => {
   ]
   runTestCases(testCases)
 })
+
+test('should support multiple delimiters of any length', () => {
+  const testCases: TestCases = [
+    ['//[*][!!][r9r]\n11r9r22*33!!44', 110],
+    ['//[*][!!][break]\n11break22*33!!44', 110],
+    ['//[*][!!][w1llth1sbreak]\n11w1llth1sbreak22*33!!44', 110],
+    ['//[*][!!][w1llth1sbre[ak]\n11w1llth1sbre[ak22*33!!44', 110]
+  ]
+  runTestCases(testCases)
+})

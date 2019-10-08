@@ -1,20 +1,50 @@
 export const EXCEPTION_MAX_TWO_NUMBERS = 'Only 2 numbers are allowed.'
 export const NEGATIVE_NUMBERS_NOT_ALLOWED = 'Negative numbers are not allowed: '
 
-const customDelimiterRegex = /^\/\/(?:\[(.+)\]|(.))\n/
+const findCustomDelimitersRegex = /^\/\/(?:(\[.+\])|(.))\n/
+const multipleCharacterDelimiterRegex = /\[([^\]]+)\]/g
 
 export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
-  // check to see if we have a custom delimiter
-  const delimiterMatch = stringOfNumbers.match(customDelimiterRegex)
-  const customDelimiter = delimiterMatch
-    ? delimiterMatch[1] || delimiterMatch[2]
-    : ''
+  // check to see if we have a custom delimiter with a single character
+  // OR one or more multiple character delimiters
+  const customDelimiterMatch = stringOfNumbers.match(findCustomDelimitersRegex)
+  const customDelimiters: Array<string> = []
 
-  // convert string to array of potential numbers that are delimited by
-  // ',', '\n' newline char, or a custom delimiter
-  const delimitersRegex = new RegExp(
-    `\n|,${customDelimiter && `|${escapeRegExp(customDelimiter)}`}`
+  // if there are custom delimiter(s)
+  if (customDelimiterMatch !== null) {
+    // captures from regex
+    const multipleCharacterCapture = customDelimiterMatch[1]
+    const singleCharacterCapture = customDelimiterMatch[2]
+
+    if (multipleCharacterCapture) {
+      // process multiple character delimiters
+      let match
+      while (
+        (match = multipleCharacterDelimiterRegex.exec(
+          multipleCharacterCapture
+        )) !== null
+      ) {
+        customDelimiters.push(match[1])
+      }
+    }
+
+    // check to see if it is a single character delimiter
+    if (singleCharacterCapture) {
+      customDelimiters.push(singleCharacterCapture)
+    }
+  }
+
+  const aggCustomDelimiters = customDelimiters.reduce<string>(
+    (agg, curDelimiter) => {
+      return agg + '|' + escapeRegExp(curDelimiter)
+    },
+    ''
   )
+
+  // create regex of all delimiters
+  const delimitersRegex = new RegExp(`\n|,${aggCustomDelimiters}`)
+
+  // convert string to array of potential numbers that are delimited by above delimiters
   const numbers = stringOfNumbers
     .split(delimitersRegex)
     .map(num => parseInt(num, 10))
