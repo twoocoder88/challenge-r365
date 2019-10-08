@@ -22,18 +22,30 @@ test('should add up the numbers delimited by a ","', () => {
   })
 })
 
-test('should throw an exception if there are more than 2 numbers', () => {
-  const testCases: TestCases = [['20,1,2'], ['1,5000,2']]
+// test('should throw an exception if there are more than 2 numbers', () => {
+//   const testCases: TestCases = [['20,1,2'], ['1,5000,2']]
 
-  testCases.forEach(tc => {
-    expect(() => {
-      add(tc[0])
-    }).toThrow(EXCEPTION_MAX_TWO_NUMBERS)
-  })
-})
+//   testCases.forEach(tc => {
+//     expect(() => {
+//       add(tc[0])
+//     }).toThrow(EXCEPTION_MAX_TWO_NUMBERS)
+//   })
+// })
 
 test('invalid/missing numbers should be converted to 0', () => {
   const testCases: TestCases = [['', 0], ['5,tytyt', 5]]
+
+  testCases.forEach(tc => {
+    expect(add(tc[0])).toBe(tc[1])
+  })
+})
+
+test('supports adding an unlimited number of numbers', () => {
+  const testCases: TestCases = [
+    ['1,2,3,4,5', 15],
+    ['1,2,3,4,5,6,7,8,9,10,11,12', 78],
+    ['1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', 120]
+  ]
 
   testCases.forEach(tc => {
     expect(add(tc[0])).toBe(tc[1])
