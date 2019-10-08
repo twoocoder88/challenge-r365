@@ -1,16 +1,20 @@
 export const EXCEPTION_MAX_TWO_NUMBERS = 'Only 2 numbers are allowed.'
 export const NEGATIVE_NUMBERS_NOT_ALLOWED = 'Negative numbers are not allowed: '
 
-const customDelimiterRegex = new RegExp('^//(.)\\n')
+const customDelimiterRegex = /^\/\/(?:\[(.+)\]|(.))\n/
 
 export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
   // check to see if we have a custom delimiter
   const delimiterMatch = stringOfNumbers.match(customDelimiterRegex)
-  const customDelimiter = delimiterMatch ? delimiterMatch[1] : ''
+  const customDelimiter = delimiterMatch
+    ? delimiterMatch[1] || delimiterMatch[2]
+    : ''
 
   // convert string to array of potential numbers that are delimited by
-  // ',', '\n' newline char, or a custom single char delimter
-  const delimitersRegex = new RegExp(`[,\n${customDelimiter}]`)
+  // ',', '\n' newline char, or a custom delimiter
+  const delimitersRegex = new RegExp(
+    `\n|,${customDelimiter && `|${escapeRegExp(customDelimiter)}`}`
+  )
   const numbers = stringOfNumbers
     .split(delimitersRegex)
     .map(num => parseInt(num, 10))
@@ -36,4 +40,9 @@ export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
 
   // else return sum
   return result[0]
+}
+
+// from MDN https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
