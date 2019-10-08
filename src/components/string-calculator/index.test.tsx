@@ -7,13 +7,14 @@ jest.mock('../../services/calculator', () => ({
 }))
 
 it('renders the StringCalculator component', () => {
-  const { getByTestId } = render(<StringCalculator />)
+  const { getByTestId, queryByText } = render(<StringCalculator />)
   const textArea = getByTestId(
     'formattedStringOfNumbers'
   ) as HTMLTextAreaElement
   const clearInputBtn = getByTestId('clearInputBtn')
   const calculateAdditionBtn = getByTestId('calculateAdditionBtn')
   const calculatedSumText = getByTestId('calculatedSum')
+  const errorMessage = queryByText(/error/i)
 
   expect(textArea).toBeTruthy()
   expect(clearInputBtn).toBeTruthy()
@@ -21,6 +22,7 @@ it('renders the StringCalculator component', () => {
   expect(calculateAdditionBtn).toBeTruthy()
   expect(calculateAdditionBtn.textContent).toBe('Calculate Addition')
   expect(calculatedSumText.textContent).toBeFalsy()
+  expect(errorMessage).toBeNull()
 
   fireEvent.change(textArea, { target: { value: '10,14' } })
   expect(textArea.value).toBe('10,14')
