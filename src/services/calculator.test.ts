@@ -6,6 +6,12 @@ import {
 // input, expected output, exception
 type TestCases = Array<[string, number?, string?]>
 
+function runTestCases(testCases: TestCases): void {
+  testCases.forEach(tc => {
+    expect(add(tc[0])).toBe(tc[1])
+  })
+}
+
 test('should return a number', () => {
   const testCases: TestCases = [['20', 20], ['1,5000', 1]]
 
@@ -16,10 +22,7 @@ test('should return a number', () => {
 
 test('should add up the numbers delimited by a ","', () => {
   const testCases: TestCases = [['20', 20], ['1,5000', 1], ['4,3', 7]]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
 
 // test('should throw an exception if there are more than 2 numbers', () => {
@@ -34,10 +37,7 @@ test('should add up the numbers delimited by a ","', () => {
 
 test('invalid/missing numbers should be converted to 0', () => {
   const testCases: TestCases = [['', 0], ['5,tytyt', 5]]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
 
 test('supports adding an unlimited number of numbers', () => {
@@ -46,18 +46,12 @@ test('supports adding an unlimited number of numbers', () => {
     ['1,2,3,4,5,6,7,8,9,10,11,12', 78],
     ['1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', 120]
   ]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
 
 test('should support the new line character "\\n" as another delimiter', () => {
   const testCases: TestCases = [['1\n2,3', 6], ['2\n4\n6', 12]]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
 
 test('should throw an exception when negative numbers are included', () => {
@@ -79,10 +73,7 @@ test('should ignore numbers greater than 1000', () => {
     ['1,1000,7', 1008],
     ['1,12340,999', 1000]
   ]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
 
 test('should support 1 additional character delimiter', () => {
@@ -91,8 +82,5 @@ test('should support 1 additional character delimiter', () => {
     ['//a\n2a5', 7],
     ['//*\n2*5', 7]
   ]
-
-  testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1])
-  })
+  runTestCases(testCases)
 })
