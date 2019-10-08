@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import './index.css'
+import './styles.css'
 import { addFormattedStringOfNumbers as add } from '../../services/calculator'
 
 const StringCalculator: React.FC = () => {
   const [calculatedSum, setCalculatedSum] = useState()
   const [formattedString, setFormattedString] = useState('')
+  const [error, setError] = useState('')
 
   return (
     <div className="calculator-container">
@@ -29,6 +30,7 @@ const StringCalculator: React.FC = () => {
               className="btn"
               type="button"
               onClick={() => {
+                setError('')
                 setFormattedString('')
                 setCalculatedSum(undefined)
               }}
@@ -40,7 +42,14 @@ const StringCalculator: React.FC = () => {
               id="calculateAdditionBtn"
               className="btn"
               type="button"
-              onClick={() => setCalculatedSum(add(formattedString))}
+              onClick={() => {
+                try {
+                  setError('')
+                  setCalculatedSum(add(formattedString))
+                } catch (e) {
+                  setError(e)
+                }
+              }}
               data-testid="calculateAdditionBtn"
             >
               Calculate Addition
@@ -55,6 +64,12 @@ const StringCalculator: React.FC = () => {
           {calculatedSum !== undefined && calculatedSum}
         </span>
       </div>
+
+      {error && (
+        <div className="error-message" data-testid="errorMessage">
+          Error: {error}
+        </div>
+      )}
     </div>
   )
 }
