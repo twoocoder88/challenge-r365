@@ -14,7 +14,7 @@ export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
       if (cur < 0) {
         agg[1].push(cur)
       }
-      agg[0] += cur
+      agg[0] += cur > 1000 ? 0 : cur;
 
       return agg
     },

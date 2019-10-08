@@ -7,7 +7,7 @@ import {
 type TestCases = Array<[string, number?, string?]>
 
 test('should return a number', () => {
-  const testCases: TestCases = [['20', 20], ['1,5000', 5001]]
+  const testCases: TestCases = [['20', 20], ['1,5000', 1]]
 
   testCases.forEach(tc => {
     expect(typeof add(tc[0])).toBe('number')
@@ -15,7 +15,7 @@ test('should return a number', () => {
 })
 
 test('should add up the numbers delimited by a ","', () => {
-  const testCases: TestCases = [['20', 20], ['1,5000', 5001], ['4,3', 7]]
+  const testCases: TestCases = [['20', 20], ['1,5000', 1], ['4,3', 7]]
 
   testCases.forEach(tc => {
     expect(add(tc[0])).toBe(tc[1])
@@ -72,3 +72,15 @@ test('should throw an exception when negative numbers are included', () => {
     }).toThrow(tc[2])
   })
 })
+
+test('should ignore numbers greater than 1000', () => {
+  const testCases: TestCases = [
+    ['999', 999],
+    ['1,1000,7', 1008],
+    ['1,12340,999', 1000],
+  ];
+
+  testCases.forEach(tc => {
+    expect(add(tc[0])).toBe(tc[1]);
+  });
+});
