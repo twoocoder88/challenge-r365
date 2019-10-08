@@ -51,3 +51,11 @@ test('supports adding an unlimited number of numbers', () => {
     expect(add(tc[0])).toBe(tc[1])
   })
 })
+
+test('should support the new line character "\n" as another delimiter', () => {
+  const testCases: TestCases = [['1\n2,3', 6]]
+
+  testCases.forEach(tc => {
+    expect(add(tc[0])).toBe(tc[1])
+  })
+})

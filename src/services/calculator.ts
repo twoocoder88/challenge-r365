@@ -3,7 +3,7 @@ export const EXCEPTION_MAX_TWO_NUMBERS = 'Only 2 numbers are allowed.'
 export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
   // convert string to array of potential numbers that are delimited by ','
   const numbers = stringOfNumbers
-    .split(',')
+    .split(/[,\n]/)
     .map(num => parseInt(num, 10))
     .filter(num => num)
 
