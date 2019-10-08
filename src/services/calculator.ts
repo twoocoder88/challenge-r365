@@ -1,10 +1,18 @@
 export const EXCEPTION_MAX_TWO_NUMBERS = 'Only 2 numbers are allowed.'
 export const NEGATIVE_NUMBERS_NOT_ALLOWED = 'Negative numbers are not allowed: '
 
+const customDelimiterRegex = new RegExp('^//(.)\\n')
+
 export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
-  // convert string to array of potential numbers that are delimited by ',' or '\n' newline char
+  // check to see if we have a custom delimiter
+  const delimiterMatch = stringOfNumbers.match(customDelimiterRegex)
+  const customDelimiter = delimiterMatch ? delimiterMatch[1] : ''
+
+  // convert string to array of potential numbers that are delimited by
+  // ',', '\n' newline char, or a custom single char delimter
+  const delimitersRegex = new RegExp(`[,\n${customDelimiter}]`)
   const numbers = stringOfNumbers
-    .split(/[,\n]/)
+    .split(delimitersRegex)
     .map(num => parseInt(num, 10))
     .filter(num => num)
 
@@ -14,7 +22,7 @@ export function addFormattedStringOfNumbers(stringOfNumbers: string): number {
       if (cur < 0) {
         agg[1].push(cur)
       }
-      agg[0] += cur > 1000 ? 0 : cur;
+      agg[0] += cur > 1000 ? 0 : cur
 
       return agg
     },

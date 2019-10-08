@@ -77,10 +77,22 @@ test('should ignore numbers greater than 1000', () => {
   const testCases: TestCases = [
     ['999', 999],
     ['1,1000,7', 1008],
-    ['1,12340,999', 1000],
-  ];
+    ['1,12340,999', 1000]
+  ]
 
   testCases.forEach(tc => {
-    expect(add(tc[0])).toBe(tc[1]);
-  });
-});
+    expect(add(tc[0])).toBe(tc[1])
+  })
+})
+
+test('should support 1 additional character delimiter', () => {
+  const testCases: TestCases = [
+    ['//;\n2;5', 7],
+    ['//a\n2a5', 7],
+    ['//*\n2*5', 7]
+  ]
+
+  testCases.forEach(tc => {
+    expect(add(tc[0])).toBe(tc[1])
+  })
+})
